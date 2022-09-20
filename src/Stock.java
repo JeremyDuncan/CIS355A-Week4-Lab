@@ -8,12 +8,13 @@
  * @author Jeremy Duncan
  */
 public class Stock {
+
     // attributes
     private String companyName;
     private double numberOfShares;
     private double purchasePrice;
     private double currentPrice;
-    
+
     //constructors
     public Stock() {
         companyName = "N/A";
@@ -21,20 +22,26 @@ public class Stock {
         purchasePrice = 0.0;
         currentPrice = 0.0;
     }
-    
-        public Stock(String companyName, double numberOfShares, double purchasePrice, double currentPrice) {
-        //Work in Progress
-        companyName = "N/A";
-        numberOfShares = 0.0;
-        purchasePrice = 0.0;
-        currentPrice = 0.0;
-    }
-        
-    //behaviors
-        
-        
-    // getters and setters
 
+    public Stock(String companyName, double numberOfShares, double purchasePrice, double currentPrice) {
+        //Work in Progress
+        this.setCompanyName(companyName);
+        this.setNumberOfShares(numberOfShares);
+        setPurchasePrice(purchasePrice);
+        setCurrentPrice(currentPrice);
+    }
+
+    //behaviors
+    public double getProfitLoss() {
+        return numberOfShares * (currentPrice - purchasePrice);
+    }
+
+    @Override
+    public String toString() {
+        return companyName;
+    }
+
+    // getters and setters
     public String getCompanyName() {
         return companyName;
     }
@@ -48,7 +55,11 @@ public class Stock {
     }
 
     public void setNumberOfShares(double numberOfShares) {
-        this.numberOfShares = numberOfShares;
+        if (numberOfShares > 0.0) {
+            this.numberOfShares = numberOfShares;
+        } else {
+            this.numberOfShares = 0.0;
+        }
     }
 
     public double getPurchasePrice() {
@@ -56,7 +67,11 @@ public class Stock {
     }
 
     public void setPurchasePrice(double purchasePrice) {
-        this.purchasePrice = purchasePrice;
+        if (purchasePrice > 0.0) {
+            this.purchasePrice = purchasePrice;
+        } else {
+            this.purchasePrice = 0.0;
+        }
     }
 
     public double getCurrentPrice() {
@@ -64,7 +79,11 @@ public class Stock {
     }
 
     public void setCurrentPrice(double currentPrice) {
-        this.currentPrice = currentPrice;
+        if (currentPrice > 0.0) {
+            this.currentPrice = currentPrice;
+        } else {
+            this.currentPrice = 0.0;
+        }
     }
-    
+
 }
