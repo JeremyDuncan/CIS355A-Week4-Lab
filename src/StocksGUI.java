@@ -1,5 +1,6 @@
 
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -205,11 +206,68 @@ public class StocksGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddStockActionPerformed
+        if (txtStockName.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Stock name is required", "Error Missing Information", JOptionPane.ERROR_MESSAGE);
+            txtStockName.requestFocus();
+            return;
+        }
+        if (txtQuantity.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Quantity is required", "Error Missing Information", JOptionPane.ERROR_MESSAGE);
+            txtQuantity.requestFocus();
+            return;
+        }
+        if (txtPurchasePrice.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Purchase price is required", "Error Missing Information", JOptionPane.ERROR_MESSAGE);
+            txtPurchasePrice.requestFocus();
+            return;
+        }
+        if (txtCurrentPrice.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Current price is required", "Error Missing Information", JOptionPane.ERROR_MESSAGE);
+            txtCurrentPrice.requestFocus();
+            return;
+        }
+
+        // error handling / Input ==============================================
+        double purchasePrice = 0.0;
+        try {
+            purchasePrice = Double.parseDouble(txtPurchasePrice.getText());
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Invalid Input. Please use numbers only", "Error Invalid data", JOptionPane.ERROR_MESSAGE);
+            txtPurchasePrice.requestFocus();
+        }
+
+        double currentPrice = 0.0;
+        try {
+            currentPrice = Double.parseDouble(txtCurrentPrice.getText());
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Invalid Input. Please use numbers only", "Error Invalid data", JOptionPane.ERROR_MESSAGE);
+            txtCurrentPrice.requestFocus();
+        }
+
+        double quantity = 0.0;
+        try {
+            quantity = Double.parseDouble(txtQuantity.getText());
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Invalid Input. Please use numbers only", "Error Invalid data", JOptionPane.ERROR_MESSAGE);
+            txtQuantity.requestFocus();
+        }
+
         // get input
-        
+        String stockName = txtStockName.getText();
+
+
         // create a stock
-        
+        Stock stk = new Stock(stockName, quantity, purchasePrice, currentPrice);
+
         // add the stock object to the Jlist
+        model.addElement(stk);
+
+        // reset form for next stock
+        txtStockName.setText("");
+        txtQuantity.setText("");
+        txtPurchasePrice.setText("");
+        txtCurrentPrice.setText("");
+        txtStockName.requestFocus();
     }//GEN-LAST:event_btnAddStockActionPerformed
 
     /**
