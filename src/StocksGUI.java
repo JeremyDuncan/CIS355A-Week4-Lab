@@ -1,4 +1,5 @@
 
+import java.text.DecimalFormat;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
@@ -62,6 +63,11 @@ public class StocksGUI extends javax.swing.JFrame {
 
         lstStocks.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         lstStocks.setModel(model);
+        lstStocks.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                lstStocksValueChanged(evt);
+            }
+        });
         scrStocks.setViewportView(lstStocks);
 
         lblProfitLoss.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
@@ -69,6 +75,11 @@ public class StocksGUI extends javax.swing.JFrame {
 
         btnRemoveStock.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         btnRemoveStock.setText("Remove Stock");
+        btnRemoveStock.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoveStockActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlStockListLayout = new javax.swing.GroupLayout(pnlStockList);
         pnlStockList.setLayout(pnlStockListLayout);
@@ -79,25 +90,24 @@ public class StocksGUI extends javax.swing.JFrame {
                 .addGroup(pnlStockListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(scrStocks)
                     .addGroup(pnlStockListLayout.createSequentialGroup()
-                        .addComponent(lblProfitLoss, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnRemoveStock)
-                        .addGap(0, 310, Short.MAX_VALUE)))
+                        .addComponent(lblProfitLoss, javax.swing.GroupLayout.PREFERRED_SIZE, 730, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 162, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(pnlStockListLayout.createSequentialGroup()
+                .addGap(361, 361, 361)
+                .addComponent(btnRemoveStock)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlStockListLayout.setVerticalGroup(
             pnlStockListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlStockListLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(scrStocks, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(pnlStockListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlStockListLayout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(lblProfitLoss))
-                    .addGroup(pnlStockListLayout.createSequentialGroup()
-                        .addGap(38, 38, 38)
-                        .addComponent(btnRemoveStock)))
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblProfitLoss)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnRemoveStock)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         lblProfitLoss.getAccessibleContext().setAccessibleName("Profit / Loss");
@@ -160,7 +170,7 @@ public class StocksGUI extends javax.swing.JFrame {
                     .addGroup(pnlAddStockLayout.createSequentialGroup()
                         .addGap(130, 130, 130)
                         .addComponent(btnAddStock)))
-                .addContainerGap(48, Short.MAX_VALUE))
+                .addContainerGap(182, Short.MAX_VALUE))
         );
         pnlAddStockLayout.setVerticalGroup(
             pnlAddStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -255,7 +265,6 @@ public class StocksGUI extends javax.swing.JFrame {
         // get input
         String stockName = txtStockName.getText();
 
-
         // create a stock
         Stock stk = new Stock(stockName, quantity, purchasePrice, currentPrice);
 
@@ -269,6 +278,36 @@ public class StocksGUI extends javax.swing.JFrame {
         txtCurrentPrice.setText("");
         txtStockName.requestFocus();
     }//GEN-LAST:event_btnAddStockActionPerformed
+
+    private void lstStocksValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstStocksValueChanged
+        // get stock and show profit / loss
+
+        Stock stk = lstStocks.getSelectedValue();
+
+        if (stk != null) {
+            double profitLoss = stk.getProfitLoss();
+            DecimalFormat fmt = new DecimalFormat("#, ##0.00");
+            if (profitLoss > 0.0) {
+                lblProfitLoss.setText("Profit of " + fmt.format(profitLoss));
+            } else if (profitLoss < 0.0) {
+                lblProfitLoss.setText("Loss of " + fmt.format(profitLoss));
+            } else {
+                lblProfitLoss.setText("Break-even with zero profit/loss");
+            }
+        }
+
+    }//GEN-LAST:event_lstStocksValueChanged
+
+    private void btnRemoveStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveStockActionPerformed
+        // get stock position
+        int position = lstStocks.getSelectedIndex();
+
+        // if selected, remove the stock
+        if (position >= 0) {
+            model.remove(position);
+            lblProfitLoss.setText("Profit / Loss");
+        }
+    }//GEN-LAST:event_btnRemoveStockActionPerformed
 
     /**
      * @param args the command line arguments
